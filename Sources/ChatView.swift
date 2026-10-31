@@ -51,7 +51,12 @@ struct ChatView: View {
             } message: {
                 Text(errorMessage ?? "")
             }
-            .onAppear { Task { await refreshModels() } }
+            .onAppear {
+                Task { await refreshModels() }
+                if selectedConversationID == nil {
+                    selectedConversationID = conversations.first?.persistentModelID
+                }
+            }
         }
     }
 
