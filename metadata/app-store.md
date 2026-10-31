@@ -27,7 +27,7 @@ NOTE
 This app is a client. You need access to an OpenAI-compatible LLM server (such as oMLX on Apple Silicon) to use it.
 
 ## Keywords (100 chars)
-local llm,omlx,ollama,lm studio,llama.cpp,tailscale,self hosted,ai chat,chatbot,machine learning,gl m,deepseek
+local llm,omlx,ollama,lm studio,llama.cpp,tailscale,self hosted,ai chat,chatbot,glm,deepseek
 
 ## Category
 Primary: Developer Tools
