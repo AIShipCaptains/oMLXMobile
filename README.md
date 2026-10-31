@@ -12,6 +12,12 @@ A native iOS client for [oMLX](https://omlx.ai) — your own local LLM server on
 - **Server health panel** (`/health`) with oMLX engine details
 - Zero third-party dependencies — pure SwiftUI + SwiftData + URLSession
 
+## Screenshots
+
+| Chat | Dashboard | Servers |
+|---|---|---|
+| <img src="docs/screenshot-chat.jpg" width="260"> | <img src="docs/screenshot-dashboard.jpg" width="260"> | <img src="docs/screenshot-servers.jpg" width="260"> |
+
 ## Why
 
 Local LLM servers are bound to one machine. oMLX + Tailscale turns a Mac into a private LLM endpoint; oMLX Mobile is the pocket front-end: full-rate access to your own models (GLM, DeepSeek, Qwen, whatever your server hosts) without any cloud.

@@ -257,6 +257,12 @@ struct DashboardView: View {
         var out: [(String, String)] = []
         for (key, value) in dict.sorted(by: { $0.key < $1.key }) {
             let fullKey = prefix.isEmpty ? key : prefix + "." + key
+            let lower = fullKey.lowercased()
+            if lower.contains("api_key") || lower.contains("apikey") || lower.contains("token")
+                || lower.contains("secret") || lower.contains("password") || lower.contains("credential") {
+                out.append((fullKey, "•••• redacted"))
+                continue
+            }
             switch value {
             case let nested as [String: Any]:
                 if depth < 1 {
