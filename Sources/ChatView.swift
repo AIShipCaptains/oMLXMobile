@@ -7,7 +7,7 @@ struct ChatView: View {
     @Query(sort: \Conversation.createdAt, order: .reverse)
     private var conversations: [Conversation]
 
-    @State private var selectedConversationID: PersistentIdentifier?
+    @State private var selectedConversation: Conversation?
     @State private var draft = ""
     @State private var isStreaming = false
     @State private var streamTask: Task<Void, Never>?
@@ -16,8 +16,9 @@ struct ChatView: View {
     @State private var showHistory = false
     @FocusState private var inputFocused: Bool
 
-    private var selectedConversation: Conversation? {
-        conversations.first { $0.persistentModelID == selectedConversationID }
+    private var activeConversation: Conversation? {
+        guard let selectedConversation, !selectedConversation.isDeleted else { return nil }
+        return selectedConversation
     }
 
     var body: some View {
@@ -29,7 +30,7 @@ struct ChatView: View {
                         systemImage: "server.rack",
                         description: Text("Add an oMLX (or any OpenAI-compatible) server in the Servers tab first.")
                     )
-                } else if let convo = selectedConversation {
+                } else if let convo = activeConversation {
                     messageList(convo)
                 } else {
                     ContentUnavailableView(
@@ -53,8 +54,8 @@ struct ChatView: View {
             }
             .onAppear {
                 Task { await refreshModels() }
-                if selectedConversationID == nil {
-                    selectedConversationID = conversations.first?.persistentModelID
+                if activeConversation == nil {
+                    selectedConversation = conversations.first
                 }
             }
         }
@@ -153,7 +154,7 @@ struct ChatView: View {
             List {
                 ForEach(conversations) { convo in
                     Button {
-                        selectedConversationID = convo.persistentModelID
+                        selectedConversation = convo
                         showHistory = false
                     } label: {
                         VStack(alignment: .leading) {
@@ -169,7 +170,7 @@ struct ChatView: View {
                         modelContext.delete(conversations[i])
                     }
                     if selectedConversation == nil, let first = conversations.first {
-                        selectedConversationID = first.persistentModelID
+                        selectedConversation = first
                     }
                 }
             }
@@ -182,12 +183,12 @@ struct ChatView: View {
     private func newConversation() {
         let convo = Conversation(model: currentModel(), serverID: profiles.activeProfile?.id)
         modelContext.insert(convo)
-        selectedConversationID = convo.persistentModelID
+        selectedConversation = convo
         draft = ""
     }
 
     private func setModel(_ model: String) {
-        guard let convo = selectedConversation else { return }
+        guard let convo = activeConversation else { return }
         convo.model = model
     }
 
