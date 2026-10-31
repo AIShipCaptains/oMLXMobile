@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 enum Keychain {
-    private static let service = "ai.omlx.mobile.serverkey"
+    private static let service = "ai.shipcaptains.omlxmobile.serverkey"
 
     static func set(_ secret: String, account: String) {
         let data = Data(secret.utf8)
